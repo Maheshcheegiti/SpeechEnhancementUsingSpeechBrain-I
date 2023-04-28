@@ -24,7 +24,7 @@ def process_file(file):
     return noisy.numpy(), enhanced[0].cpu().numpy(), rate
 
 def main():
-    st.set_page_config(page_title="Speech Enhancement", page_icon="🔊", layout="wide")
+    st.set_page_config(page_title="Speech Enhancement | MetricGan+", page_icon="🔊", layout="wide")
 
     st.title("Speech Enhancement - SpeechBrain - MetricGan+")
 
