@@ -18,9 +18,11 @@ def allowed_file(filename):
 def process_file(file):
     noisy, rate = torchaudio.load(file)
     assert rate == 16000, "sampling rate must be 16000"
+    # Remove extra dimension from input signal
+    noisy = noisy.squeeze(0)
     # Add fake batch dimension and relative length tensor
     enhanced = enhance_model.enhance_batch(noisy.unsqueeze(0), lengths=torch.tensor([1.]))
-    return noisy[0].numpy(), enhanced[0].cpu().numpy(), rate
+    return noisy.numpy(), enhanced[0].cpu().numpy(), rate
 
 def main():
     st.set_page_config(page_title="Speech Enhancement", page_icon="🔊", layout="wide")
