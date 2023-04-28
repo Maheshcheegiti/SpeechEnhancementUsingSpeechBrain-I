@@ -1,5 +1,4 @@
 import streamlit as st
-import os
 import torch
 import torchaudio
 from speechbrain.pretrained import SpectralMaskEnhancement
@@ -26,22 +25,19 @@ def process_file(file):
 
 def main():
     st.set_page_config(page_title="Speech Enhancement", page_icon="🔊", layout="wide")
-    st.title("Speech Enhancement Using SpeechBrain - MetricGan+")
+
+    st.title("Speech Enhancement")
 
     uploaded_file = st.file_uploader("Upload an audio file", type=ALLOWED_EXTENSIONS)
 
     if uploaded_file is not None:
         if allowed_file(uploaded_file.name):
             with st.spinner("Processing..."):
-                noisy, enhanced, sr = process_file(uploaded_file)
-            st.audio(noisy, format='audio/wav', start_time=0, sample_rate=sr, caption="Noisy signal")
-            st.audio(enhanced, format='audio/wav', start_time=0, sample_rate=sr, caption="Enhanced signal")
-            st.download_button(
-                label="Download enhanced signal",
-                data=enhanced,
-                file_name="enhanced.wav",
-                mime="audio/wav"
-            )
+                speech, enhanced, sr = process_file(uploaded_file)
+            st.audio(speech, format='audio/wav', start_time=0, sample_rate=sr)
+            st.text("Original audio")
+            st.audio(enhanced, format='audio/wav', start_time=0, sample_rate=sr)
+            st.text("Enhanced audio")
         else:
             st.warning("Invalid file type. Please upload a WAV file.")
 
